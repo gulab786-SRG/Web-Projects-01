@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<link rel="stylesheet" href="./profile.css">
+
+</head>
+
+<body>
+    <div class="card offset-5 my-5" style="width: 18rem;" id="userCard">
+        <img src="./profile.jpg" class="card-img-top" alt="..."/>
+            <div>
+            <h5 class="card-title" id="userCardName"></h5>
+            <a href="#"  style="border-radius: 25px;" class="btn btn-primary">Go somewhere</a>
+          <button class="btn btn-primary"  id="addData" style="border-radius: 25px;"> Add Data </button>
+          
+          </div>
+
+    </div>
+
+<!-- For for Adding data  -->
+<form action="">
+  <div class="container bg-light p-5 m-5"  id="FormContainer" >
+    <div class="mb-3 row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+      <div class="col-sm-10">
+  
+  
+        <input type="text" 
+       
+        class="form-control" 
+        id="staticEmail">
+  
+  
+      </div>
+    </div>
+  
+    <div class="mb-3 row">
+      <label for="password" class="col-sm-2 col-form-label">Password</label>
+      <div class="col-sm-10">
+        <input type="password"  class="form-control" 
+        id="password">
+      </div>
+    </div>
+  
+    <div class="mb-3 row">
+      <label for="Service" class="col-sm-2 col-form-label">Service</label>
+      <div class="col-sm-10">
+        <input type="text" 
+       
+        class="form-control"
+         id="Service">
+      </div>
+    </div>
+  
+  
+    <div class="mb-3 row">
+      <div class="col-sm-10">
+    <button class="btn btn-primary"   id="SubmitData" style="border-radius: 25px;"> Submit</button>
+      </div>
+    </div>
+  
+    <button class="btn btn-primary" style="border-radius: 25px;" id="closeForm"> Close Form</button>
+   <button class="btn btn-primary " style="border-radius: 25px;" type="reset">reset</button>         
+  </div>
+</form>
+<!-- / -->
+
+
+    <div>
+      <table class="table bg-light  " >
+        <thead>
+          <tr wi>
+            <th scope="col">#</th>
+            <th scope="col">Email</th>
+            <th scope="col">password</th>
+            <th scope="col">Service</th>
+          </tr>
+        </thead>
+        <tbody id="res">
+         
+        </tbody>
+      </table>
+    </div>
+
+
+    
+
+
+
+
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+      <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+    
+                     <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    
+           <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyAo9PzUaqdqd34xV90JFP1H79F8lKQMBwM",
+        authDomain: "learn-firebase-auth-ff1ec.firebaseapp.com",
+        projectId: "learn-firebase-auth-ff1ec",
+        storageBucket: "learn-firebase-auth-ff1ec.appspot.com",
+        messagingSenderId: "327961297592",
+        appId: "1:327961297592:web:205fbf50481fc0e7bc6a4d"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+     
+     
+ var userCard=document.getElementById("userCard");
+ userCard.style.display="none";
+
+
+ const addData =document.getElementById("addData");
+ const closeForm=document.getElementById("closeForm");
+ const FormContainer=document.getElementById("FormContainer");
+
+ FormContainer.style.display="none";
+
+//FormContainer
+var formAvailable=false;
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    console.log("user exsist");
+    console.log(user.displayName);
+    userCard.style.display="block";
+    document.getElementById('userCardName').innerHTML=user.displayName
+    addData.addEventListener("click",()=>{
+
+//close form onclick function
+      FormContainer.style.display="block";
+      formAvailable=true
+      closeForm.addEventListener("click",()=>{
+        FormContainer.style.display="none";
+        formAvailable=false
+      })
+    })
+
+//  adding the data
+// Add a new document in collection "cities"
+
+// Add a new document in collection "cities"
+
+
+
+  } else {
+    alert("User Info For Card is Not available")
+  console.log("else call");
+  }
+});
+if(formAvailable){
+  FormContainer.style.display="block"
+}
+
+function submitInfo(){
+
+  var email =document.getElementById('staticEmail').value;
+var password =document.getElementById('password').value;
+var Service =document.getElementById('Service').value;
+
+var data ={
+  Email:email,
+  password:password,
+  Service:Service
+}
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+
+    if(data.Email!=""&& data.password!=""&&data.Service!=""){
+      
+// Add a new document in collection "cities"
+
+// var messageRef = db.collection('rooms').doc('roomA')
+//                 .collection('messages').doc('message1');
+
+
+//firebase.firestore().collection("AdminUser").doc(user.uid).collection(user.uid).doc(data.Service);
+firebase.firestore().collection("AdminUser").doc(user.uid).collection( user.uid).doc(data.Service).set(
+  data
+)
+.then(() => {
+    console.log("Document successfully written!");
+    readData();
+   
+   
+   
+
+})
+.catch((error) => {
+    console.error("Error writing document: ", error);
+});
+
+
+
+    }
+    else{
+      alert("User data is empty , please fill it ")
+    }
+  
+  } else {
+    // No user is signed in.
+  }
+});
+
+
+
+
+}
+
+function  readData(){
+  firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+
+    
+
+  document.getElementById("res").innerHTML="";
+
+firebase.firestore().collection("AdminUser").doc(user.uid).collection( user.uid).get().then((docs)=>{
+          var i=1;
+                docs.forEach(element => {
+                   
+                    document.getElementById("res").innerHTML+=
+                    `
+                    <tr>
+                      <td>${i++} </td>
+                    <td>${element.data().Email} </td>
+                    <td>${element.data().password} </td>
+                    <td>${element.data().Service} </td>
+                    </tr>
+                    `
+                });
+
+            })
+            
+            document.getElementById('staticEmail').innerText="";
+document.getElementById('password').innerHTML="";
+
+document.getElementById('Service').innerHTML="";
+    // User is signed in.
+  } else {
+    // No user is signed in.
+  }
+});
+
+  
+        }
+
+const  submitButton=document.getElementById("SubmitData");
+submitButton.addEventListener("click",submitInfo)
+
+readData();
+function blank(){
+  document.getElementById('staticEmail').innerText="";
+document.getElementById('password').innerHTML="";
+
+document.getElementById('Service').innerHTML="";
+
+}
+     </script>
+      
+</body>
+</html>

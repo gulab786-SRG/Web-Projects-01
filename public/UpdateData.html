@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <title>Update</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<style>
+  label{
+font-size: 25px;
+  }
+  .file{
+    font-size: 18px;
+  }
+ 
+
+</style>
+  </head>
+
+<body style="background-color: #120E43; color: aliceblue;" >
+    
+    <div class="container  m-5 border ">
+
+        <center>
+           <div style="font-size: 25px; font-family: 'Times New Roman', Times, serif;">
+            ENTER  THE PREVIOUS USER NAME 
+        </div>
+
+
+          <div style="font-size: 25px; font-family: 'Times New Roman', Times, serif; text-transform: capitalize;">
+            
+            <div class="row m-5">
+                <div class="col">
+                  <label for="preUser" class="form-label">Name</label>
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control file" id="preUser" aria-describedby="emailHelp"
+                    value="">
+    
+                </div>
+              </div>
+            UPDATE YOUR DATA
+          </div>
+        </center>
+
+        <div class="mb-3">
+          <div class="row m-5">
+            <div class="col">
+              <label for="nameforDashboardUpdate" class="form-label">Name</label>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control file" id="nameforDashboardUpdate" aria-describedby="emailHelp"
+                value="">
+
+            </div>
+          </div>
+
+
+
+
+          <div class="mb-3">
+            <div class="row m-5">
+              <div class="col">
+                <label for="emailForDashboardUpdate" class="form-label">Email Address</label>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control file" aria-describedby="emailHelp"
+                  id="emailForDashboardUpdate">
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="row m-5">
+                <div class="col">
+                  <label for="contactNumberForDashboardUpdate" class="form-label">Contact Number</label>
+                </div>
+                <div class="col"><input type="text" value="" class="form-control file" aria-describedby="emailHelp"
+                    id="contactNumberForDashboardUpdate">
+                </div>
+                <div class="row">
+                  <button style="width:fit-content; margin-left: 500px; margin-top: 100px;" class="btn btn-primary"
+                    id="addDataUpdate"> submit</button>
+
+                </div>
+              </div>
+
+              <table class="table bg-light">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col">Name</th>
+                    <th scope="col">Mobile_Number</th>
+                    <th scope="col">Email</th>
+                  </tr>
+                </thead>
+                <tbody id="res">
+                  
+                 
+                </tbody>
+              </table>
+        
+     
+  
+
+
+
+
+
+
+    
+
+ 
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-firestore.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAo9PzUaqdqd34xV90JFP1H79F8lKQMBwM",
+    authDomain: "learn-firebase-auth-ff1ec.firebaseapp.com",
+    projectId: "learn-firebase-auth-ff1ec",
+    storageBucket: "learn-firebase-auth-ff1ec.appspot.com",
+    messagingSenderId: "327961297592",
+    appId: "1:327961297592:web:205fbf50481fc0e7bc6a4d"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  function UpdateData(){
+      //preUser
+      let preUser    = document.getElementById('preUser').value;
+      
+        let fname = document.getElementById('nameforDashboardUpdate').value;
+        let femail = document.getElementById('emailForDashboardUpdate').value;
+        let fcontactNumber = document.getElementById('contactNumberForDashboardUpdate').value;
+  
+        let UpdateData={
+            userName:fname,
+            Mobile_Number:fcontactNumber,
+            email_Address:femail
+
+        }
+       if(UpdateData.userName){
+        firebase.firestore().collection("Users").doc("doc_"+preUser)
+        .update
+        (UpdateData).then(()=>{
+            alert("Data updated")
+        }).catch((e)=>{
+            console.log(e);
+        })
+       }
+       else{
+           alert("UserName Empty")
+       }
+
+
+    }
+    document.getElementById('addDataUpdate').addEventListener("click",UpdateData);
+    readData();
+        function readData(){
+         
+            firebase.firestore().collection("Users").get().then((docs)=>{
+              document.getElementById("res").innerHTM=""; 
+              docs.forEach(element => {
+                    console.log(element.data());
+                    console.log(element.id);
+                });
+
+            })
+
+            firebase.firestore().collection("Users").get().then((docs)=>{
+                docs.forEach(element => {
+                   document.getElementById("res").innerHTML+=`
+                   
+                   <tr>
+                   <td>${element.data().userName} </td>
+                   <td>${element.data().Mobile_Number} </td>
+                   <td>${element.data().email_Address} </td>
+                   </tr>
+                   `
+                });
+
+            })
+
+            
+            
+        }
+
+</script>
+ <script src="./Dashboard.js"></script>
+
+ 
+ 
+</body>
+</html>
